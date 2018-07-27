@@ -391,6 +391,16 @@ open class PluggableApplicationDelegate: UIResponder, UIApplicationDelegate {
         return result
     }
     
+    @available(iOS 6.0, *)
+    open func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        for service in __services {
+            if let orientationMask = service.application?(application, supportedInterfaceOrientationsFor: window) {
+                return orientationMask
+            }
+        }
+        
+        return .portrait
+    }
     
     @available(iOS 6.0, *)
     open func application(_ application: UIApplication, viewControllerWithRestorationIdentifierPath identifierComponents: [Any], coder: NSCoder) -> UIViewController? {
